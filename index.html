@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Radar de Enchentes RS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-zone="ok">
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+        <path d="M2 12c4-4 8-4 12 0s8 4 12 0l4 0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M2 20c4-4 8-4 12 0s8 4 12 0l4 0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+      </svg>
+      <h1>Radar de Enchentes <span class="brand-tag">RS</span></h1>
+    </div>
+
+    <p class="live" aria-live="polite">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span id="liveText">Conectando…</span>
+    </p>
+
+    <nav class="tabs" role="tablist" aria-label="Seções">
+      <button type="button" role="tab" id="btnPainel" data-tab="painel" aria-selected="true" aria-controls="tabPainel">Painel</button>
+      <button type="button" role="tab" id="btnCidades" data-tab="cidades" aria-selected="false" aria-controls="tabCidades">Cidades</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ABA: PAINEL -->
+    <section id="tabPainel" class="panel" role="tabpanel" aria-labelledby="btnPainel">
+
+      <div id="alert" class="alert" role="alert" hidden></div>
+
+      <div class="hero">
+        <div class="gauge" aria-hidden="true">
+          <div class="gauge-scale">
+            <span class="tick" id="tickDanger">Perigo</span>
+            <span class="tick" id="tickRisk">Risco</span>
+          </div>
+          <div class="gauge-track" id="gaugeTrack">
+            <div class="gauge-water" id="gaugeWater"></div>
+          </div>
+          <div class="gauge-read">
+            <span id="gaugeNow">—</span>
+          </div>
+        </div>
+
+        <div class="hero-body">
+          <p class="place" id="placeName">—</p>
+          <h2 class="status" id="statusText">Carregando…</h2>
+          <p class="status-note" id="statusNote">Buscando dados do rio mais próximo.</p>
+
+          <dl class="quick">
+            <div>
+              <dt>Risco de alagamento</dt>
+              <dd id="qFlood">—</dd>
+            </div>
+            <div>
+              <dt>Altura do rio</dt>
+              <dd id="qRiver">—</dd>
+            </div>
+            <div>
+              <dt>Tendência</dt>
+              <dd id="qTrend">—</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="grid">
+        <section class="chart-card" aria-labelledby="chartTitle">
+          <div class="chart-head">
+            <h3 id="chartTitle">Vazão do rio: últimos 90 dias e próximos 7</h3>
+            <ul class="legend">
+              <li><i class="sw sw-ok"></i>Normal</li>
+              <li><i class="sw sw-risk"></i>Em risco</li>
+              <li><i class="sw sw-danger"></i>Perigoso</li>
+              <li><i class="sw sw-dash"></i>Previsão</li>
+            </ul>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="chart" role="img" aria-label="Gráfico da vazão do rio com faixas verde, amarela e vermelha"></canvas>
+            <div class="tip" id="tip" hidden></div>
+          </div>
+        </section>
+
+        <section class="metrics-card" aria-labelledby="metricsTitle">
+          <h3 id="metricsTitle">Detalhes</h3>
+          <dl class="metrics" id="metrics"></dl>
+        </section>
+      </div>
+    </section>
+
+    <!-- ABA: CIDADES -->
+    <section id="tabCidades" class="panel" role="tabpanel" aria-labelledby="btnCidades" hidden>
+      <div class="search">
+        <label for="q">Pesquisar cidade do RS</label>
+        <input id="q" type="search" placeholder="Ex.: Lajeado, Pelotas, Santa Maria" autocomplete="off" spellcheck="false">
+        <p id="listInfo" class="list-info" aria-live="polite"></p>
+      </div>
+      <ul id="cityList" class="city-list"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Dados: Open-Meteo (modelo GloFAS de vazão de rios e previsão de chuva). Os valores são estimativas para o rio mais próximo da cidade e não substituem os avisos oficiais da Defesa Civil.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
